@@ -37,7 +37,7 @@ export class UserController extends BaseResolver {
   })
   async getUsers(@Query() getUsersDto: PaginationDto): Promise<GetUsersResponse> {
     const userQuery = await this.userService.createQueryBuilder('user');
-    console.log('@@@');
+
     userQuery.skip(getUsersDto.offset).take(getUsersDto.limit);
 
     const [users, itemCount] = await userQuery.getManyAndCount();
