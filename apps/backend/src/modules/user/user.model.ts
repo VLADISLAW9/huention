@@ -1,15 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { BaseResponse } from '@/shared';
+import { BaseResponse, PaginationResponse } from '@/shared';
 
 import { User } from './entities';
 
-export class UserResponse extends BaseResponse {
-  @ApiProperty({ description: 'User', type: User })
+export class GetUserResponse extends BaseResponse {
+  @ApiProperty({ description: 'Пользователь', type: User })
   user: User;
 }
 
-export class UsersResponse extends BaseResponse {
-  @ApiProperty({ description: 'User', type: [User] })
+export class GetUsersResponse extends PaginationResponse {
+  @ApiProperty({ description: 'Список пользователей', type: [User] })
   users: User[];
+}
+
+export class CreateUserResponse extends BaseResponse {
+  @ApiProperty({ description: 'Пользователь', type: User })
+  user: User;
 }
