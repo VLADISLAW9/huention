@@ -3,11 +3,10 @@ import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/
 
 import { BaseResolver, PaginationDto } from '@/shared';
 
-import { CreateUserDto } from './dto/create-user-dto';
-import { CreateUserResponse, GetUserResponse, GetUsersResponse } from './user.model';
+import { GetUserResponse, GetUsersResponse } from './user.model';
 import { UserService } from './user.service';
 
-@ApiTags('user')
+@ApiTags('Users')
 @Controller('/users')
 export class UserController extends BaseResolver {
   constructor(private readonly userService: UserService) {
@@ -75,18 +74,6 @@ export class UserController extends BaseResolver {
     const user = await this.userService.findOne({
       where: { id: Number(getUserDto.userId) }
     });
-    return this.wrapSuccess({ user });
-  }
-
-  @Post('')
-  @ApiOperation({ summary: 'Create user' })
-  @ApiResponse({
-    status: 200,
-    description: 'user',
-    type: CreateUserResponse
-  })
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<CreateUserResponse> {
-    const user = await this.userService.save(createUserDto);
     return this.wrapSuccess({ user });
   }
 }
