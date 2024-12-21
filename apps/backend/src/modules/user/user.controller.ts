@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { BaseResolver, PaginationDto } from '@/shared';
+import { BaseResolver } from '@/shared';
 
 import { GetUsersDto } from './dto';
 import { GetUserResponse, GetUsersResponse } from './user.model';
@@ -20,16 +20,16 @@ export class UserController extends BaseResolver {
     required: true,
     type: Number,
     default: 10,
-    description: 'Number of users to return per page'
+    description: 'Лимит пользователей'
   })
   @ApiQuery({
     name: 'offset',
     required: true,
     type: Number,
     default: 0,
-    description: 'Number of users to skip'
+    description: 'Число пользователей, которое нужно пропустить'
   })
-  @ApiOperation({ summary: 'Get users list with pagination' })
+  @ApiOperation({ summary: 'Получить список пользователей' })
   @ApiResponse({
     status: 200,
     description: 'Список пользователей',
@@ -59,22 +59,27 @@ export class UserController extends BaseResolver {
   }
 
   @Get('/:userId')
-  @ApiOperation({ summary: 'Get user by id' })
+  @ApiOperation({ summary: 'Получить пользователя по id' })
   @ApiParam({
     name: 'userId',
     type: String,
-    description: 'user id',
+    description: 'id пользователя',
     example: '1'
   })
   @ApiResponse({
     status: 200,
-    description: 'user',
+    description: 'Пользователь',
     type: GetUserResponse
   })
   async getUser(@Param() getUserDto: { userId: string }): Promise<GetUserResponse> {
     const user = await this.userService.findOne({
       where: { id: Number(getUserDto.userId) }
     });
+
+    if (!user) {
+      throw new NotFoundException(this.wrapFail('Пользователь не найден'));
+    }
+
     return this.wrapSuccess({ user });
   }
 }
