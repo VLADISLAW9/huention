@@ -3,6 +3,7 @@ import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/
 
 import { BaseResolver, PaginationDto } from '@/shared';
 
+import { GetUsersDto } from './dto';
 import { GetUserResponse, GetUsersResponse } from './user.model';
 import { UserService } from './user.service';
 
@@ -34,7 +35,7 @@ export class UserController extends BaseResolver {
     description: 'Список пользователей',
     type: GetUsersResponse
   })
-  async getUsers(@Query() getUsersDto: PaginationDto): Promise<GetUsersResponse> {
+  async getUsers(@Query() getUsersDto: GetUsersDto): Promise<GetUsersResponse> {
     const userQuery = await this.userService.createQueryBuilder('user');
 
     userQuery.skip(getUsersDto.offset).take(getUsersDto.limit);
