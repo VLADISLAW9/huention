@@ -1,22 +1,21 @@
 import { BadRequestException, Body, ConflictException, Controller, Post } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 
 import { BaseResolver } from '@/shared';
 
-import { UserService } from '../user';
-import { User } from '../user/entities';
+import { User, UserService } from '../user';
 import { AuthSignInResponse, AuthSignUpResponse } from './auth.model';
-import { AuthSignInDto } from './dto/auth-sign-in-dto';
-import { AuthSignUpDto } from './dto/auth-sign-up-dto';
+import { AuthService } from './auth.service';
+import { AuthSignInDto, AuthSignUpDto } from './dto';
 
 @ApiTags('Auth')
 @Controller('/auth')
 export class AuthController extends BaseResolver {
   constructor(
-    private readonly userService: UserService,
-    private readonly jwtService: JwtService
+    private authService: AuthService,
+    private userService: UserService,
+    private jwtService: JwtService
   ) {
     super();
   }
@@ -35,9 +34,12 @@ export class AuthController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Не правильно введен email или пароль'));
     }
 
-    const hashPassword = await bcrypt.hash(authSignInDto.password, user.salt);
+    const validatePassword = await this.authService.validatePassword(
+      authSignInDto.password,
+      user.password
+    );
 
-    if (hashPassword !== user.password) {
+    if (!validatePassword) {
       throw new BadRequestException(this.wrapFail('Не правильно введен email или пароль'));
     }
 
@@ -76,12 +78,15 @@ export class AuthController extends BaseResolver {
 
     const user = new User();
 
+    const salt = await this.authService.generateSalt();
+    const hashPassword = await this.authService.hashPassword(authSignUpDto.password, salt);
+
     user.email = authSignUpDto.email;
     user.firstName = authSignUpDto.firstName;
     user.lastName = authSignUpDto.lastName;
     user.username = authSignUpDto.username;
-    user.salt = await bcrypt.genSalt();
-    user.password = await bcrypt.hash(authSignUpDto.password, user.salt);
+    user.password = hashPassword;
+    user.salt = salt;
 
     const savedUser = await this.userService.save(user);
     const accessToken = this.jwtService.sign({ user: savedUser });
