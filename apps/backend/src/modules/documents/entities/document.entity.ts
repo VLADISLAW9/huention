@@ -1,5 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+
+import { Collection } from '@/modules/collections/entities';
 
 @Entity('document')
 export class Document {
@@ -31,9 +41,14 @@ export class Document {
   })
   body: string;
 
+  @Column({ default: null })
   @ApiProperty({
-    description: 'Уникальный идентификатор коллекции к которой принадлежит документ',
-    example: 2
+    description: 'Id создателя документа',
+    example: 1
   })
-  collectionId: number;
+  creatorId: number;
+
+  @ManyToOne(() => Collection, (collection) => collection.documents)
+  @JoinColumn({ name: 'collectionId', referencedColumnName: 'id' })
+  collection: Collection;
 }

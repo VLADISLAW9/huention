@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Document } from '@/modules/documents/entities';
 
@@ -33,7 +33,7 @@ export class Collection {
   })
   creatorId: number;
 
-  @OneToMany(() => Document, (document) => document.collectionId)
+  @OneToMany(() => Document, (document: Document) => document.collection)
   @ApiProperty({
     description: 'Документы коллекции',
     example: [
@@ -41,5 +41,5 @@ export class Collection {
       { id: 2, name: 'Документ 2' }
     ]
   })
-  documents: Pick<Document, 'id' | 'name'>[];
+  documents: Document[];
 }

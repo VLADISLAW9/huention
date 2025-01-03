@@ -1,13 +1,5 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Post,
-  Req
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { ApiAuthorizedOnly, BaseResolver } from '@/shared';
 
@@ -42,7 +34,7 @@ export class CollectionsController extends BaseResolver {
 
     const user = await this.usersService.getUserByToken(token);
 
-    const collections = await this.collectionsService.findAll();
+    const collections = await this.collectionsService.getCollections();
 
     if (!collections) {
       throw new NotFoundException('Коллекции не найдены');
