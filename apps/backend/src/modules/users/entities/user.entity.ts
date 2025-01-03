@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')

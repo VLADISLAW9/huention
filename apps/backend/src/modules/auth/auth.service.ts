@@ -1,11 +1,6 @@
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 
 export class AuthService {
-  async decode(token: string) {
-    return jwt.decode(token);
-  }
-
   async hashPassword(password: string, salt: string): Promise<string> {
     return await bcrypt.hash(password, salt);
   }

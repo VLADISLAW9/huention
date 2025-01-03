@@ -1,27 +1,10 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Query,
-  Req
-} from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiHeader,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiResponse,
-  ApiTags
-} from '@nestjs/swagger';
+import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { BaseResolver } from '@/shared';
 
-import { AuthService } from '../auth';
 import { GetUsersDto } from './dto';
-import { GetUserResponse, GetUsersResponse, SessionResponse } from './users.model';
+import { GetUserResponse, GetUsersResponse } from './users.model';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')

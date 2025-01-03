@@ -34,11 +34,7 @@ export class ProfileController extends BaseResolver {
     // @ts-ignore
     const token = request.headers.authorization.split(' ')[1];
 
-    const decodedJwtAccessToken = (await this.authService.decode(token)) as { user: User };
-
-    const _user = await this.usersService.findOne({
-      where: { id: decodedJwtAccessToken.user.id }
-    });
+    const _user = await this.usersService.getUserByToken(token);
 
     if (!_user) {
       throw new BadRequestException(this.wrapFail('Пользователь не найден'));
