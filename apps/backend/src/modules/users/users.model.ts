@@ -26,3 +26,8 @@ export class CreateUserResponse extends BaseResponse {
   @ApiProperty({ description: 'Пользователь', type: UserResponse })
   user: UserResponse;
 }
+
+export class SessionResponse extends BaseResponse {
+  @ApiProperty({ description: 'Пользователь', type: UserResponse })
+  user: UserResponse;
+}

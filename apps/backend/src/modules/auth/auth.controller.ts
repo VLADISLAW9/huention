@@ -4,7 +4,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { BaseResolver } from '@/shared';
 
-import { User, UserService } from '../user';
+import { User, UsersService } from '../users';
 import { AuthSignInResponse, AuthSignUpResponse } from './auth.model';
 import { AuthService } from './auth.service';
 import { AuthSignInDto, AuthSignUpDto } from './dto';
@@ -14,7 +14,7 @@ import { AuthSignInDto, AuthSignUpDto } from './dto';
 export class AuthController extends BaseResolver {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
+    private usersService: UsersService,
     private jwtService: JwtService
   ) {
     super();
@@ -28,7 +28,7 @@ export class AuthController extends BaseResolver {
     type: AuthSignInResponse
   })
   async signIn(@Body() authSignInDto: AuthSignInDto) {
-    const user = await this.userService.findOne({ where: { email: authSignInDto.email } });
+    const user = await this.usersService.findOne({ where: { email: authSignInDto.email } });
 
     if (!user) {
       throw new BadRequestException(this.wrapFail('Не правильно введен email или пароль'));
@@ -70,7 +70,7 @@ export class AuthController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Пароли не совпадают'));
     }
 
-    const userExists = await this.userService.findOne({ where: { email: authSignUpDto.email } });
+    const userExists = await this.usersService.findOne({ where: { email: authSignUpDto.email } });
 
     if (userExists) {
       throw new ConflictException(this.wrapFail('Пользователь с таким email уже существует'));
@@ -88,7 +88,7 @@ export class AuthController extends BaseResolver {
     user.password = hashPassword;
     user.salt = salt;
 
-    const savedUser = await this.userService.save(user);
+    const savedUser = await this.usersService.save(user);
     const accessToken = this.jwtService.sign({ user: savedUser });
 
     const authSignUpResponse = new AuthSignUpResponse();

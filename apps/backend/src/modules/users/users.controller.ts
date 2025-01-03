@@ -1,16 +1,33 @@
-import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+  Req
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 
 import { BaseResolver } from '@/shared';
 
+import { AuthService } from '../auth';
 import { GetUsersDto } from './dto';
-import { GetUserResponse, GetUsersResponse } from './user.model';
-import { UserService } from './user.service';
+import { GetUserResponse, GetUsersResponse, SessionResponse } from './users.model';
+import { UsersService } from './users.service';
 
 @ApiTags('Users')
 @Controller('/users')
-export class UserController extends BaseResolver {
-  constructor(private readonly userService: UserService) {
+export class UsersController extends BaseResolver {
+  constructor(private usersService: UsersService) {
     super();
   }
 
@@ -36,7 +53,7 @@ export class UserController extends BaseResolver {
     type: GetUsersResponse
   })
   async getUsers(@Query() getUsersDto: GetUsersDto): Promise<GetUsersResponse> {
-    const userQuery = await this.userService.createQueryBuilder('user');
+    const userQuery = await this.usersService.createQueryBuilder('user');
 
     userQuery.skip(getUsersDto.offset).take(getUsersDto.limit);
 
@@ -72,7 +89,7 @@ export class UserController extends BaseResolver {
     type: GetUserResponse
   })
   async getUser(@Param() getUserDto: { userId: string }): Promise<GetUserResponse> {
-    const user = await this.userService.findOne({
+    const user = await this.usersService.findOne({
       where: { id: Number(getUserDto.userId) }
     });
 

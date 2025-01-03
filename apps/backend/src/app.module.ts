@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthModule, UserModule, UserService } from './modules';
+import { AuthModule, ProfileModule, UsersModule } from './modules';
 
 @Module({
   imports: [
@@ -15,8 +15,9 @@ import { AuthModule, UserModule, UserService } from './modules';
       entities: ['dist/**/*.entity.js'],
       synchronize: true
     }),
-    UserModule,
-    AuthModule
+    UsersModule,
+    AuthModule,
+    ProfileModule
   ],
   controllers: [],
   providers: []

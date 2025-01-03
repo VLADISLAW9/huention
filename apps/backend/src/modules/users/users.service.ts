@@ -8,11 +8,11 @@ import { BaseService } from '@/shared';
 import { User } from './entities';
 
 @Injectable()
-export class UserService extends BaseService<User> {
+export class UsersService extends BaseService<User> {
   constructor(
     @InjectRepository(User)
-    private readonly UserRepository: Repository<User>
+    private readonly UsersRepository: Repository<User>
   ) {
-    super(UserRepository);
+    super(UsersRepository);
   }
 }
