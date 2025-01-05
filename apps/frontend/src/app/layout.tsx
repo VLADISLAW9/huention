@@ -11,7 +11,11 @@ export const metadata = {
   description: 'Huention is notes app for you!'
 };
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang='en' {...mantineHtmlProps}>
       <head>

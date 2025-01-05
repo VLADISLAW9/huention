@@ -6,8 +6,12 @@ export const metadata = {
   title: 'Вход | Huention'
 };
 
-const SignUpLayout = ({ children }: { children: ReactNode }) => {
+interface SignInLayoutProps {
+  children: ReactNode;
+}
+
+const SignInLayout = ({ children }: SignInLayoutProps) => {
   return <Center h='100vh'>{children}</Center>;
 };
 
-export default SignUpLayout;
+export default SignInLayout;

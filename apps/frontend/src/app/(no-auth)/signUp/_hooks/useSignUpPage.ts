@@ -1,13 +1,17 @@
+import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
 
 import { postAuthSignUp } from '@/utils/api/requests';
+import { LOCAL_STORAGE_KEYS, ROUTES } from '@/utils/constants';
 
 import type { SignupFormState } from '../_constants';
 
 import { SignupFormSchema } from '../_constants';
 
 export const useSignUpPage = () => {
-  async function signup(_: SignupFormState, formData: FormData) {
+  const router = useRouter();
+
+  async function signUp(_: SignupFormState, formData: FormData) {
     const validatedFields = SignupFormSchema.safeParse({
       email: formData.get('email'),
       password: formData.get('password'),
@@ -17,9 +21,6 @@ export const useSignUpPage = () => {
       confirmPassword: formData.get('confirmPassword')
     });
 
-    console.log('formData', formData);
-    console.log('validatedFields', validatedFields);
-
     if (!validatedFields.success) {
       return {
         errors: validatedFields.error.flatten().fieldErrors
@@ -28,10 +29,13 @@ export const useSignUpPage = () => {
 
     const postAuthSignUpResponse = await postAuthSignUp({ params: validatedFields.data });
 
-    console.log(postAuthSignUpResponse);
+    if (!postAuthSignUpResponse.data.data.success) return;
+
+    localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, postAuthSignUpResponse.data.data.accessToken);
+    router.push(ROUTES.HOME);
   }
 
-  const [signupFormState, signupFormAction, signupFormPending] = useActionState(signup, undefined);
+  const [signupFormState, signupFormAction, signupFormPending] = useActionState(signUp, undefined);
 
   return {
     state: { signupFormState, signupFormPending },

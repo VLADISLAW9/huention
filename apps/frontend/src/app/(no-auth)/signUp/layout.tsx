@@ -6,7 +6,11 @@ export const metadata = {
   title: 'Регистрация | Huention'
 };
 
-const SignUpLayout = ({ children }: { children: ReactNode }) => {
+interface SignUpLayoutProps {
+  children: ReactNode;
+}
+
+const SignUpLayout = ({ children }: SignUpLayoutProps) => {
   return <Center h='100vh'>{children}</Center>;
 };
 
