@@ -1,5 +1,7 @@
-import { AppShell, AppShellHeader, AppShellMain, AppShellNavbar } from '@mantine/core';
+import { AppShell, AppShellMain } from '@mantine/core';
 import { ReactNode } from 'react';
+
+import { Header, Navbar } from './components';
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,8 +17,8 @@ export const Layout = ({ children }: LayoutProps) => {
       header={{ height: 60 }}
       padding='md'
     >
-      <AppShellHeader p='md'>Header</AppShellHeader>
-      <AppShellNavbar p='md'>AppShellNavbar</AppShellNavbar>
+      <Header />
+      <Navbar />
       <AppShellMain>{children}</AppShellMain>
     </AppShell>
   );

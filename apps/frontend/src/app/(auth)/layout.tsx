@@ -1,15 +1,16 @@
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 
-import { theme } from '../../theme';
+import { theme } from '../../../theme';
+import { Layout } from './_components';
 
 import '@mantine/core/styles.css';
 
 export const metadata = {
-  title: 'Huention',
-  description: 'Huention is notes app for you!'
+  title: 'Mantine Next.js template',
+  description: 'I am using Mantine with Next.js!'
 };
 
-const RootLayout = ({ children }: { children: any }) => {
+const AuthLayout = ({ children }: { children: any }) => {
   return (
     <html lang='en' {...mantineHtmlProps}>
       <head>
@@ -22,11 +23,11 @@ const RootLayout = ({ children }: { children: any }) => {
       </head>
       <body>
         <MantineProvider theme={theme} forceColorScheme='dark'>
-          {children}
+          <Layout>{children}</Layout>
         </MantineProvider>
       </body>
     </html>
   );
 };
 
-export default RootLayout;
+export default AuthLayout;
