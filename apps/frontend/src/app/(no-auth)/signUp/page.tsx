@@ -1,5 +1,18 @@
 'use client';
-import { Button, Card, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
+import {
+  Anchor,
+  Button,
+  Card,
+  Center,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Title
+} from '@mantine/core';
+import Link from 'next/link';
+
+import { ROUTES } from '@/utils/constants';
 
 import { useSignUpPage } from './_hooks';
 
@@ -55,9 +68,16 @@ const SignUpPage = () => {
               placeholder='Введите ваш пароль снова...'
             />
           </Stack>
-          <Button mt='xl' type='submit' loading={state.signupFormPending}>
-            Зарегистрироваться
-          </Button>
+          <Center>
+            <Stack>
+              <Button mt='xl' type='submit' loading={state.signupFormPending}>
+                Зарегистрироваться
+              </Button>
+              <Anchor href={ROUTES.SIGN_IN} ta='center' component={Link}>
+                Уже есть аккаунт?
+              </Anchor>
+            </Stack>
+          </Center>
         </form>
       </Stack>
     </Card>

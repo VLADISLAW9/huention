@@ -1,11 +1,14 @@
 import { useActionState } from 'react';
 
-import { SignupFormSchema, SignupFormState } from '../_constants';
+import { postAuthSignUp } from '@/utils/api/requests';
+
+import type { SignupFormState } from '../_constants';
+
+import { SignupFormSchema } from '../_constants';
 
 export const useSignUpPage = () => {
-  async function signup(state: SignupFormState, formData: FormData) {
+  async function signup(_: SignupFormState, formData: FormData) {
     const validatedFields = SignupFormSchema.safeParse({
-      name: formData.get('name'),
       email: formData.get('email'),
       password: formData.get('password'),
       username: formData.get('username'),
@@ -14,13 +17,18 @@ export const useSignUpPage = () => {
       confirmPassword: formData.get('confirmPassword')
     });
 
-    console.log(validatedFields, formData, state);
+    console.log('formData', formData);
+    console.log('validatedFields', validatedFields);
 
     if (!validatedFields.success) {
       return {
         errors: validatedFields.error.flatten().fieldErrors
       };
     }
+
+    const postAuthSignUpResponse = await postAuthSignUp({ params: validatedFields.data });
+
+    console.log(postAuthSignUpResponse);
   }
 
   const [signupFormState, signupFormAction, signupFormPending] = useActionState(signup, undefined);

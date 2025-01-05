@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 
 import { theme } from '../../theme';
@@ -9,7 +11,7 @@ export const metadata = {
   description: 'Huention is notes app for you!'
 };
 
-const RootLayout = ({ children }: { children: any }) => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang='en' {...mantineHtmlProps}>
       <head>

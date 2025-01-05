@@ -1,0 +1,525 @@
+openapi: 3.0.0
+paths:
+  /api/users:
+    get:
+      operationId: UsersController_getUsers
+      parameters:
+        - name: limit
+          required: true
+          in: query
+          description: Лимит пользователей
+          schema:
+            minimum: 1
+            default: 10
+            example: 10
+            type: number
+        - name: offset
+          required: true
+          in: query
+          description: Число пользователей, которое нужно пропустить
+          schema:
+            minimum: 0
+            default: 0
+            example: 0
+            type: number
+      responses:
+        '200':
+          description: Список пользователей
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+      summary: Получить список пользователей
+      tags:
+        - Users
+  /api/users/{userId}:
+    get:
+      operationId: UsersController_getUser
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: id пользователя
+          schema:
+            example: '1'
+            type: string
+      responses:
+        '200':
+          description: Пользователь
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+      summary: Получить пользователя по id
+      tags:
+        - Users
+  /api/auth/signin:
+    post:
+      operationId: AuthController_signIn
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSignInDto'
+      responses:
+        '200':
+          description: Авторизация пользователя прошла успешна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSignInResponse'
+      summary: Авторизация пользователя
+      tags:
+        - Auth
+  /api/auth/signup:
+    post:
+      operationId: AuthController_signUp
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSignUpDto'
+      responses:
+        '200':
+          description: Регистрация пользователя прошла успешна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSignUpResponse'
+      summary: Регистрация пользователя
+      tags:
+        - Auth
+  /api/profile:
+    get:
+      operationId: ProfileController_getProfile
+      parameters:
+        - name: authorization
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProfileResponse'
+      security:
+        - bearer: []
+      summary: получить сессию пользователя
+      tags:
+        - Profile
+  /api/documents:
+    get:
+      operationId: DocumentsController_getDocuments
+      parameters: []
+      responses:
+        '200':
+          description: Коллекции пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDocumentsResponse'
+      security:
+        - bearer: []
+      summary: Получить коллекции пользователя
+      tags:
+        - Documents
+    post:
+      operationId: DocumentsController_createCollection
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostDocumentDto'
+      responses:
+        '200':
+          description: Документ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDocumentResponse'
+      security:
+        - bearer: []
+      summary: Создать документ
+      tags:
+        - Documents
+  /api/collections:
+    get:
+      operationId: CollectionsController_getCollections
+      parameters: []
+      responses:
+        '200':
+          description: Коллекции пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCollectionsResponse'
+      security:
+        - bearer: []
+      summary: Получить коллекции пользователя
+      tags:
+        - Collections
+    post:
+      operationId: CollectionsController_createCollection
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCollectionDto'
+      responses:
+        '200':
+          description: Коллекции пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostCollectionResponse'
+      security:
+        - bearer: []
+      summary: Создать коллекцию
+      tags:
+        - Collections
+info:
+  title: Huention
+  description: ''
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties: {}
+    GetUsersResponse:
+      type: object
+      properties:
+        page:
+          type: number
+          description: The current page number (starting from 1)
+          example: 1
+        offset:
+          type: number
+          description: The number of items to retrieve per page
+          example: 10
+        itemCount:
+          type: number
+          description: The total number of items available
+          example: 100
+        pageCount:
+          type: number
+          description: The total number of pages available based on the item count and take
+          example: 10
+        prev:
+          type: boolean
+          description: Indicates if there is a previous page available
+          example: true
+        next:
+          type: boolean
+          description: Indicates if there is a next page available
+          example: false
+        users:
+          description: Список пользователей
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+      required:
+        - page
+        - offset
+        - itemCount
+        - pageCount
+        - prev
+        - next
+        - users
+    GetUserResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        user:
+          description: Пользователь
+          allOf:
+            - $ref: '#/components/schemas/UserResponse'
+      required:
+        - success
+        - user
+    AuthSignInDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Логин учетной записи
+          example: Vlad
+        password:
+          type: string
+          description: Пароль учетной записи
+          example: 1234qwerty
+      required:
+        - email
+        - password
+    AuthSignInResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        user:
+          description: Пользователь
+          allOf:
+            - $ref: '#/components/schemas/UserResponse'
+        accessToken:
+          type: string
+          description: Токен доступа
+      required:
+        - success
+        - user
+        - accessToken
+    AuthSignUpDto:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Никнейм пользователя
+          example: Vladik2k
+        email:
+          type: string
+          description: Почта пользователя
+          example: vlad@gmail.com
+        password:
+          type: string
+          description: Пароль учетной записи
+          example: 1234qwerty
+        confirmPassword:
+          type: string
+          description: Подтверждение пароля учетной записи
+          example: 1234qwerty
+        firstName:
+          type: string
+          description: Имя пользователя
+          example: 1234qwerty
+        lastName:
+          type: string
+          description: Фамилия пользователя
+          example: 1234qwerty
+      required:
+        - username
+        - email
+        - password
+        - confirmPassword
+        - firstName
+        - lastName
+    AuthSignUpResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        user:
+          description: Пользователь
+          allOf:
+            - $ref: '#/components/schemas/UserResponse'
+        accessToken:
+          type: string
+          description: Токен доступа
+      required:
+        - success
+        - user
+        - accessToken
+    GetProfileResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        user:
+          description: Пользователь
+          allOf:
+            - $ref: '#/components/schemas/UserResponse'
+        accessToken:
+          type: string
+          description: Токен доступа
+      required:
+        - success
+        - user
+        - accessToken
+    Document:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Уникальный идентификатор документа
+          example: 1
+        name:
+          type: string
+          description: Имя коллекции
+          example: Личное
+        description:
+          type: string
+          description: Описание коллекции
+          example: Описание
+        body:
+          type: string
+          description: Тело документа
+          example: Какой то текст с какой то информацией
+        creatorId:
+          type: number
+          description: Id создателя документа
+          example: 1
+      required:
+        - id
+        - name
+        - description
+        - body
+        - creatorId
+    GetDocumentsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        documents:
+          description: 'Документы пользователя '
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+      required:
+        - success
+        - documents
+    PostDocumentDto:
+      type: object
+      properties:
+        collectionId:
+          type: number
+          description: Id коллекции документа
+          example: 1
+      required:
+        - collectionId
+    PostDocumentResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        document:
+          description: Документ
+          allOf:
+            - $ref: '#/components/schemas/Document'
+      required:
+        - success
+        - document
+    Collection:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Уникальный идентификатор коллекции
+          example: 1
+        name:
+          type: string
+          description: Имя коллекции
+          example: Личное
+        description:
+          type: string
+          description: Описание коллекции
+          example: Описание
+        creatorId:
+          type: number
+          description: Id создателя коллекции
+          example: 1
+        documents:
+          description: Документы коллекции
+          example:
+            - id: 1
+              name: Документ 1
+            - id: 2
+              name: Документ 2
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - description
+        - creatorId
+        - documents
+    GetCollectionsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        collections:
+          description: Коллекции
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+      required:
+        - success
+        - collections
+    PostCollectionDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Имя коллекции
+          example: Личное
+        description:
+          type: string
+          description: Описание коллекции
+          example: 1234qwerty
+      required:
+        - name
+    PostCollectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Request status
+        reason:
+          type: string
+          description: Error reason
+          nullable: true
+        collection:
+          description: Коллекция
+          allOf:
+            - $ref: '#/components/schemas/Collection'
+      required:
+        - success
+        - collection
