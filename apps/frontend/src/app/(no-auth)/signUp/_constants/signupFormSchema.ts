@@ -1,12 +1,18 @@
 import { z } from 'zod';
 
 export const SignupFormSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-  username: z.string().min(2, { message: 'Username must be at least 2 characters long.' }).trim(),
-  firstName: z.string().min(2, { message: 'Name must be at least 2 characters long.' }).trim(),
-  lastName: z.string().min(2, { message: 'Name must be at least 2 characters long.' }).trim(),
-  password: z.string().min(1, { message: 'Be at least 8 characters long' }).trim(),
-  confirmPassword: z.string().min(1, { message: 'Be at least 8 characters long' }).trim()
+  email: z.string().email({ message: 'Введите действительный адрес электронной почты.' }).trim(),
+  username: z
+    .string()
+    .min(2, { message: 'Имя пользователя должно содержать не менее 2 символов.' })
+    .trim(),
+  firstName: z.string().min(2, { message: 'Имя должно содержать не менее 2 символов.' }).trim(),
+  lastName: z.string().min(2, { message: 'Фамилия должна содержать не менее 2 символов.' }).trim(),
+  password: z.string().min(1, { message: 'Пароль должен содержать не менее 8 символов.' }).trim(),
+  confirmPassword: z
+    .string()
+    .min(1, { message: 'Пароль должен содержать не менее 8 символов.' })
+    .trim()
 });
 
 export type SignupFormState =
@@ -19,6 +25,14 @@ export type SignupFormState =
         confirmPassword?: string[];
         email?: string[];
         password?: string[];
+      };
+      data?: {
+        email: FormDataEntryValue | null;
+        username: FormDataEntryValue | null;
+        firstName: FormDataEntryValue | null;
+        lastName: FormDataEntryValue | null;
+        password: FormDataEntryValue | null;
+        confirmPassword: FormDataEntryValue | null;
       };
       message?: string;
     }

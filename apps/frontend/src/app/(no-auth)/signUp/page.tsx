@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Anchor,
   Button,
@@ -26,6 +27,7 @@ const SignUpPage = () => {
         <form action={functions.signupFormAction}>
           <Stack w='400px'>
             <TextInput
+              defaultValue={state.signupFormState?.data.email?.toString()}
               id='email'
               label={<Text mb='xs'>Почта</Text>}
               name='email'
@@ -33,6 +35,7 @@ const SignUpPage = () => {
               placeholder='Введите вашу почту...'
             />
             <TextInput
+              defaultValue={state.signupFormState?.data.username?.toString()}
               id='username'
               label={<Text mb='xs'>Никнейм</Text>}
               name='username'
@@ -40,6 +43,7 @@ const SignUpPage = () => {
               placeholder='Введите ваш никнейм...'
             />
             <TextInput
+              defaultValue={state.signupFormState?.data.firstName?.toString()}
               id='firstName'
               label={<Text mb='xs'>Имя</Text>}
               name='firstName'
@@ -47,6 +51,7 @@ const SignUpPage = () => {
               placeholder='Введите вашу имя...'
             />
             <TextInput
+              defaultValue={state.signupFormState?.data.lastName?.toString()}
               id='lastName'
               label={<Text mb='xs'>Фамилия</Text>}
               name='lastName'
@@ -54,6 +59,7 @@ const SignUpPage = () => {
               placeholder='Введите вашу фамилию...'
             />
             <PasswordInput
+              defaultValue={state.signupFormState?.data.password?.toString()}
               id='password'
               label={<Text mb='xs'>Пароль</Text>}
               name='password'
@@ -61,6 +67,7 @@ const SignUpPage = () => {
               placeholder='Введите ваш пароль...'
             />
             <PasswordInput
+              defaultValue={state.signupFormState?.data.confirmPassword?.toString()}
               id='confirmPassword'
               label={<Text mb='xs'>Подтверждение пароля</Text>}
               name='confirmPassword'
