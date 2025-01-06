@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation';
-import { useRouter } from 'next/router';
 import { useActionState } from 'react';
 
 import { postAuthSignIn } from '@/utils/api/requests';
@@ -25,7 +24,11 @@ export const useSignInPage = () => {
 
     const postAuthSignInResponse = await postAuthSignIn({ params: validatedFields.data });
 
-    if (!postAuthSignInResponse.data.success) return;
+    if (!postAuthSignInResponse.data.success) {
+      return {
+        data: signInFormData
+      };
+    }
 
     localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, postAuthSignInResponse.data.accessToken);
     redirect(ROUTES.HOME);

@@ -31,7 +31,7 @@ const SignInPage = () => {
               id='email'
               label={<Text mb='xs'>Почта</Text>}
               name='email'
-              error={state.signinFormState?.errors.email}
+              error={state.signinFormState?.errors?.email}
               placeholder='Введите вашу почту...'
             />
             <PasswordInput
@@ -39,7 +39,7 @@ const SignInPage = () => {
               id='password'
               label={<Text mb='xs'>Пароль</Text>}
               name='password'
-              error={state.signinFormState?.errors.password}
+              error={state.signinFormState?.errors?.password}
               placeholder='Введите ваш пароль...'
             />
           </Stack>
