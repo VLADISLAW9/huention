@@ -7,5 +7,8 @@ import { huentionApi } from '@/utils/api/instance';
 type postAuthSignInRequestConfig = FetchesRequestConfig<AuthSignInDto>;
 type postAuthSignInResponse = FetchesResponse<AuthSignInResponse>;
 
-export const postAuthSignIn = async ({ params, config }: postAuthSignInRequestConfig) =>
-  await huentionApi.post<postAuthSignInResponse>('/auth/signin', params, config);
+export const postAuthSignIn = async ({
+  params,
+  config
+}: postAuthSignInRequestConfig): Promise<postAuthSignInResponse> =>
+  await huentionApi.post('auth/signin', params, config);

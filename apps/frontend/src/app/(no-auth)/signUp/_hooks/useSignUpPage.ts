@@ -9,7 +9,7 @@ import type { SignupFormState } from '../_constants';
 import { SignupFormSchema } from '../_constants';
 
 export const useSignUpPage = () => {
-  async function signUp(_: SignupFormState, formData: FormData) {
+  const signUp = async (_: SignupFormState, formData: FormData) => {
     const signUpFormData = {
       email: formData.get('email'),
       password: formData.get('password'),
@@ -34,7 +34,7 @@ export const useSignUpPage = () => {
 
     localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, postAuthSignUpResponse.data.accessToken);
     redirect(ROUTES.HOME);
-  }
+  };
 
   const [signupFormState, signupFormAction, signupFormPending] = useActionState(signUp, undefined);
 
