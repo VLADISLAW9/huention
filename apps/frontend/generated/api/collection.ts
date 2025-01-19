@@ -5,13 +5,15 @@
  * OpenAPI spec version: 1.0
  */
 
+import type { Document } from './document';
+
 export interface Collection {
   /** Id создателя коллекции */
   creatorId: number;
   /** Описание коллекции */
   description: string;
   /** Документы коллекции */
-  documents: string[];
+  documents: Document[];
   /** Уникальный идентификатор коллекции */
   id: number;
   /** Имя коллекции */
