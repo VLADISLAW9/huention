@@ -1,5 +1,6 @@
 import { Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { ApiAuthorizedOnly, BaseResolver } from '@/shared';
 
@@ -10,6 +11,7 @@ import { PostCollectionDto } from './dto';
 import { Collection } from './entities';
 
 @Controller('collections')
+@ApiAuthorizedOnly()
 export class CollectionsController extends BaseResolver {
   constructor(
     readonly collectionsService: CollectionsService,
@@ -19,7 +21,6 @@ export class CollectionsController extends BaseResolver {
   }
 
   @Get()
-  @ApiAuthorizedOnly()
   @ApiOperation({ summary: 'Получить коллекции пользователя' })
   @ApiResponse({
     status: 200,
@@ -28,9 +29,7 @@ export class CollectionsController extends BaseResolver {
   })
   @ApiBearerAuth()
   async getCollections(@Req() request: Request): Promise<GetCollectionsResponse> {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-ignore
-    const token = request.headers.authorization.split(' ')[1];
+    const token = request.cookies.access_token;
 
     const user = await this.usersService.getUserByToken(token);
 
@@ -46,7 +45,6 @@ export class CollectionsController extends BaseResolver {
   }
 
   @Post()
-  @ApiAuthorizedOnly()
   @ApiOperation({ summary: 'Создать коллекцию' })
   @ApiResponse({
     status: 200,
@@ -58,9 +56,7 @@ export class CollectionsController extends BaseResolver {
     @Req() request: Request,
     @Body() body: PostCollectionDto
   ): Promise<PostCollectionResponse> {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-ignore
-    const token = request.headers.authorization.split(' ')[1];
+    const token = request.cookies.access_token;
 
     const user = await this.usersService.getUserByToken(token);
 
