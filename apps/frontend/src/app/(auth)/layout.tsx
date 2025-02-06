@@ -1,9 +1,9 @@
-'use client';
 import { AppShell, AppShellMain } from '@mantine/core';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { type ReactNode, useLayoutEffect } from 'react';
 
-import { LOCAL_STORAGE_KEYS, ROUTES } from '@/utils/constants';
+import { COOKIES_KEYS, ROUTES } from '@/utils/constants';
 
 import { Header, Navbar } from './(components)/layout';
 
@@ -13,12 +13,10 @@ interface AuthLayoutProps {
   children: ReactNode;
 }
 
-const AuthLayout = ({ children }: AuthLayoutProps) => {
-  useLayoutEffect(() => {
-    if (!localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN)) {
-      redirect(ROUTES.SIGN_IN);
-    }
-  }, []);
+const AuthLayout = async ({ children }: AuthLayoutProps) => {
+  const cookiesStore = await cookies();
+
+  if (!cookiesStore.get(COOKIES_KEYS.ACCESS_TOKEN)) return redirect(ROUTES.SIGN_IN);
 
   return (
     <AppShell

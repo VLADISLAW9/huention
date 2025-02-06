@@ -1,18 +1,14 @@
-'use client';
-
 import type { ReactNode } from 'react';
 
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { useLayoutEffect } from 'react';
 
-import { LOCAL_STORAGE_KEYS, ROUTES } from '@/utils/constants';
+import { COOKIES_KEYS, ROUTES } from '@/utils/constants';
 
-const NoAuthLayout = ({ children }: { children: ReactNode }) => {
-  useLayoutEffect(() => {
-    if (localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN)) {
-      redirect(ROUTES.HOME);
-    }
-  }, []);
+const NoAuthLayout = async ({ children }: { children: ReactNode }) => {
+  const cookiesStore = await cookies();
+
+  if (cookiesStore.get(COOKIES_KEYS.ACCESS_TOKEN)) return redirect(ROUTES.HOME);
 
   return children;
 };

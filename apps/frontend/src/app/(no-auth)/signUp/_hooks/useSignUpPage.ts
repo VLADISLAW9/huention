@@ -1,8 +1,8 @@
-import { redirect, useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useActionState } from 'react';
 
 import { postAuthSignUp } from '@/utils/api/requests';
-import { LOCAL_STORAGE_KEYS, ROUTES } from '@/utils/constants';
+import { ROUTES } from '@/utils/constants';
 
 import type { SignupFormState } from '../_constants';
 
@@ -32,7 +32,6 @@ export const useSignUpPage = () => {
 
     if (!postAuthSignUpResponse.data.success) return;
 
-    localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, postAuthSignUpResponse.data.accessToken);
     redirect(ROUTES.HOME);
   };
 

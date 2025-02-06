@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { useActionState } from 'react';
 
 import { postAuthSignIn } from '@/utils/api/requests';
-import { LOCAL_STORAGE_KEYS, ROUTES } from '@/utils/constants';
+import { ROUTES } from '@/utils/constants';
 
 import { SigninFormSchema, type SigninFormState } from '../_constants';
 

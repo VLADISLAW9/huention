@@ -16,10 +16,7 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 
-const RootLayout = async ({ children }: RootLayoutProps) => {
-  const cookie = await cookies();
-  console.log('@@@', cookie.get('access_token'));
-
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang='en' {...mantineHtmlProps}>
       <head>
