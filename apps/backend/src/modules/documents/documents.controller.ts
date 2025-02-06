@@ -1,5 +1,6 @@
 import { Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { ApiAuthorizedOnly, BaseResolver } from '@/shared';
 
@@ -9,6 +10,7 @@ import { DocumentsService } from './documents.service';
 import { PostDocumentDto } from './dto';
 
 @Controller('documents')
+@ApiAuthorizedOnly()
 export class DocumentsController extends BaseResolver {
   constructor(
     private readonly documentsService: DocumentsService,
@@ -17,7 +19,6 @@ export class DocumentsController extends BaseResolver {
     super();
   }
   @Get()
-  @ApiAuthorizedOnly()
   @ApiOperation({ summary: 'Получить коллекции пользователя' })
   @ApiResponse({
     status: 200,
@@ -26,9 +27,7 @@ export class DocumentsController extends BaseResolver {
   })
   @ApiBearerAuth()
   async getDocuments(@Req() request: Request): Promise<GetDocumentsResponse> {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-ignore
-    const token = request.headers.authorization.split(' ')[1];
+    const token = request.cookies.access_token;
 
     const user = await this.usersService.getUserByToken(token);
 
@@ -44,7 +43,6 @@ export class DocumentsController extends BaseResolver {
   }
 
   @Post()
-  @ApiAuthorizedOnly()
   @ApiOperation({ summary: 'Создать документ' })
   @ApiResponse({
     status: 200,
@@ -56,9 +54,7 @@ export class DocumentsController extends BaseResolver {
     @Req() request: Request,
     @Body() body: PostDocumentDto
   ): Promise<PostDocumentResponse> {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-ignore
-    const token = request.headers.authorization.split(' ')[1];
+    const token = request.cookies.access_token;
 
     const user = await this.usersService.getUserByToken(token);
 

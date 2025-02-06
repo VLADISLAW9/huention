@@ -1,19 +1,16 @@
 import { BadRequestException, Controller, Get, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { ApiAuthorizedOnly, BaseResolver } from '@/shared';
 
-import { AuthService } from '../auth';
-import { User, UserResponse, UsersService } from '../users';
+import { UserResponse, UsersService } from '../users';
 import { GetProfileResponse } from './profile.model';
 
-@ApiTags('Profile')
 @Controller('/profile')
+@ApiAuthorizedOnly()
 export class ProfileController extends BaseResolver {
-  constructor(
-    private authService: AuthService,
-    private usersService: UsersService
-  ) {
+  constructor(private usersService: UsersService) {
     super();
   }
 
@@ -30,9 +27,7 @@ export class ProfileController extends BaseResolver {
   })
   @ApiBearerAuth()
   async getProfile(@Req() request: Request): Promise<GetProfileResponse> {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-ignore
-    const token = request.headers.authorization.split(' ')[1];
+    const token = request.cookies.access_token;
 
     const _user = await this.usersService.getUserByToken(token);
 
