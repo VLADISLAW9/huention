@@ -1,6 +1,14 @@
-import { BadRequestException, Body, ConflictException, Controller, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  Post,
+  Res
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 
 import { BaseResolver } from '@/shared';
 
@@ -27,7 +35,7 @@ export class AuthController extends BaseResolver {
     description: 'Авторизация пользователя прошла успешна',
     type: AuthSignInResponse
   })
-  async signIn(@Body() authSignInDto: AuthSignInDto) {
+  async signIn(@Res({ passthrough: true }) signInRes, @Body() authSignInDto: AuthSignInDto) {
     const user = await this.usersService.findOne({ where: { email: authSignInDto.email } });
 
     if (!user) {
@@ -46,7 +54,6 @@ export class AuthController extends BaseResolver {
     const accessToken = this.jwtService.sign({ user });
     const authSignInResponse = new AuthSignInResponse();
 
-    authSignInResponse.accessToken = accessToken;
     authSignInResponse.user = {
       id: user.id,
       firstName: user.firstName,
@@ -55,7 +62,13 @@ export class AuthController extends BaseResolver {
       username: user.username
     };
 
-    return this.wrapSuccess({ user, accessToken });
+    signInRes.cookie('access_token', accessToken, {
+      httpOnly: true,
+      maxAge: 86400000,
+      sameSite: 'strict'
+    });
+
+    return this.wrapSuccess({ user });
   }
 
   @Post('/signup')
@@ -65,7 +78,10 @@ export class AuthController extends BaseResolver {
     description: 'Регистрация пользователя прошла успешна',
     type: AuthSignUpResponse
   })
-  async signUp(@Body() authSignUpDto: AuthSignUpDto) {
+  async signUp(
+    @Res({ passthrough: true }) signUpRes: Response,
+    @Body() authSignUpDto: AuthSignUpDto
+  ) {
     if (authSignUpDto.password !== authSignUpDto.confirmPassword) {
       throw new BadRequestException(this.wrapFail('Пароли не совпадают'));
     }
@@ -93,7 +109,6 @@ export class AuthController extends BaseResolver {
 
     const authSignUpResponse = new AuthSignUpResponse();
 
-    authSignUpResponse.accessToken = accessToken;
     authSignUpResponse.user = {
       id: savedUser.id,
       firstName: savedUser.firstName,
@@ -102,6 +117,12 @@ export class AuthController extends BaseResolver {
       username: savedUser.username
     };
 
-    return this.wrapSuccess({ user, accessToken });
+    signUpRes.cookie('access_token', accessToken, {
+      httpOnly: true,
+      maxAge: 86400000,
+      sameSite: 'strict'
+    });
+
+    return this.wrapSuccess({ user });
   }
 }

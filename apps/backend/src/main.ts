@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module.js';
 
@@ -16,13 +17,15 @@ async function bootstrap() {
     })
   );
 
+  app.setGlobalPrefix('/api');
+
+  app.use(cookieParser());
+
   app.enableCors({
     origin: true,
     methods: 'GET,PUT,PATCH,POST,DELETE',
     credentials: true
   });
-
-  app.setGlobalPrefix('/api');
 
   app.use('/live', (_req, res) => {
     res.json({ status: true });
