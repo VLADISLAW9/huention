@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
+import { cookies } from 'next/headers';
 
 import { theme } from '../../theme';
 
@@ -15,7 +16,10 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 
-const RootLayout = ({ children }: RootLayoutProps) => {
+const RootLayout = async ({ children }: RootLayoutProps) => {
+  const cookie = await cookies();
+  console.log('@@@', cookie.get('access_token'));
+
   return (
     <html lang='en' {...mantineHtmlProps}>
       <head>

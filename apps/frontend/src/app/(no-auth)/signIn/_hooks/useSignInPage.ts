@@ -22,7 +22,10 @@ export const useSignInPage = () => {
       };
     }
 
-    const postAuthSignInResponse = await postAuthSignIn({ params: validatedFields.data });
+    const postAuthSignInResponse = await postAuthSignIn({
+      params: validatedFields.data,
+      config: { credentials: 'include' }
+    });
 
     if (!postAuthSignInResponse.data.success) {
       return {
@@ -30,7 +33,6 @@ export const useSignInPage = () => {
       };
     }
 
-    localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, postAuthSignInResponse.data.accessToken);
     redirect(ROUTES.HOME);
   };
 

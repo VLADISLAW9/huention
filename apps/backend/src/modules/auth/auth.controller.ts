@@ -35,7 +35,10 @@ export class AuthController extends BaseResolver {
     description: 'Авторизация пользователя прошла успешна',
     type: AuthSignInResponse
   })
-  async signIn(@Res({ passthrough: true }) signInRes, @Body() authSignInDto: AuthSignInDto) {
+  async signIn(
+    @Res({ passthrough: true }) signInRes: Response,
+    @Body() authSignInDto: AuthSignInDto
+  ) {
     const user = await this.usersService.findOne({ where: { email: authSignInDto.email } });
 
     if (!user) {
@@ -64,8 +67,7 @@ export class AuthController extends BaseResolver {
 
     signInRes.cookie('access_token', accessToken, {
       httpOnly: true,
-      maxAge: 86400000,
-      sameSite: 'strict'
+      secure: false
     });
 
     return this.wrapSuccess({ user });
@@ -119,8 +121,7 @@ export class AuthController extends BaseResolver {
 
     signUpRes.cookie('access_token', accessToken, {
       httpOnly: true,
-      maxAge: 86400000,
-      sameSite: 'strict'
+      secure: false
     });
 
     return this.wrapSuccess({ user });
