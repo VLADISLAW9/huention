@@ -1,3 +1,5 @@
+'use client';
+
 import { AppShellNavbar, NavLink, Stack, Text, Tree } from '@mantine/core';
 
 import { RenderTreeNode } from './components';

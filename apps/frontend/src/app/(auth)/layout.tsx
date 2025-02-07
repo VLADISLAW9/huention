@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
+
 import { AppShell, AppShellMain } from '@mantine/core';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { type ReactNode, useLayoutEffect } from 'react';
 
 import { COOKIES_KEYS, ROUTES } from '@/utils/constants';
 

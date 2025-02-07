@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 import { ROUTES } from '@/utils/constants';
 
-import { useSignUpPage } from './_hooks';
+import { useSignUpPage } from './(hooks)';
 
 const SignUpPage = () => {
   const { state, functions } = useSignUpPage();

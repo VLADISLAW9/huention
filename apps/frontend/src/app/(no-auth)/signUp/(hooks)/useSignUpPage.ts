@@ -4,9 +4,7 @@ import { useActionState } from 'react';
 import { postAuthSignUp } from '@/utils/api/requests';
 import { ROUTES } from '@/utils/constants';
 
-import type { SignupFormState } from '../_constants';
-
-import { SignupFormSchema } from '../_constants';
+import { SignupFormSchema, type SignupFormState } from '../(constants)/signupFormSchema';
 
 export const useSignUpPage = () => {
   const signUp = async (_: SignupFormState, formData: FormData) => {

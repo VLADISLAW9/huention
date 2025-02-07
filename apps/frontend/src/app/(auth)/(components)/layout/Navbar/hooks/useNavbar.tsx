@@ -22,7 +22,7 @@ export const useNavbar = () => {
   ];
 
   useEffect(() => {
-    const fetchCollectionItems = async () => {
+    (async () => {
       const getCollectionsResponse = await getCollections();
 
       const collectionItems: TreeNodeData[] = getCollectionsResponse.data.collections.map(
@@ -37,9 +37,7 @@ export const useNavbar = () => {
       );
 
       setCollectionItems(collectionItems);
-    };
-
-    fetchCollectionItems();
+    })();
   }, []);
 
   return {

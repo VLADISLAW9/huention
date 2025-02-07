@@ -1,3 +1,5 @@
+'use client';
+
 import { Group, type RenderTreeNodePayload } from '@mantine/core';
 import { IconBooks, IconChevronDown } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';

@@ -11,7 +11,6 @@ import { PostCollectionDto } from './dto';
 import { Collection } from './entities';
 
 @Controller('collections')
-@ApiAuthorizedOnly()
 export class CollectionsController extends BaseResolver {
   constructor(
     readonly collectionsService: CollectionsService,
@@ -21,6 +20,7 @@ export class CollectionsController extends BaseResolver {
   }
 
   @Get()
+  @ApiAuthorizedOnly()
   @ApiOperation({ summary: 'Получить коллекции пользователя' })
   @ApiResponse({
     status: 200,
@@ -45,6 +45,7 @@ export class CollectionsController extends BaseResolver {
   }
 
   @Post()
+  @ApiAuthorizedOnly()
   @ApiOperation({ summary: 'Создать коллекцию' })
   @ApiResponse({
     status: 200,

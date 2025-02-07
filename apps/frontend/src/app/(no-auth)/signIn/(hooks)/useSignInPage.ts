@@ -4,7 +4,7 @@ import { useActionState } from 'react';
 import { postAuthSignIn } from '@/utils/api/requests';
 import { ROUTES } from '@/utils/constants';
 
-import { SigninFormSchema, type SigninFormState } from '../_constants';
+import { SigninFormSchema, type SigninFormState } from '../(constants)';
 
 export const useSignInPage = () => {
   const signIn = async (_: SigninFormState, formData: FormData) => {
@@ -23,8 +23,7 @@ export const useSignInPage = () => {
     }
 
     const postAuthSignInResponse = await postAuthSignIn({
-      params: validatedFields.data,
-      config: { credentials: 'include' }
+      params: validatedFields.data
     });
 
     if (!postAuthSignInResponse.data.success) {

@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 import { ROUTES } from '@/utils/constants';
 
-import { useSignInPage } from './_hooks';
+import { useSignInPage } from './(hooks)';
 
 const SignInPage = () => {
   const { state, functions } = useSignInPage();
