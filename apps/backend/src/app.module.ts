@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import {
   AuthModule,
@@ -9,18 +9,20 @@ import {
   UsersModule
 } from './modules';
 
+const TYPE_ORM_MODULE_OPTIONS: TypeOrmModuleOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'admin',
+  password: '1234',
+  database: 'huention',
+  entities: ['dist/**/*.entity.js'],
+  synchronize: true
+};
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'admin',
-      database: 'huention',
-      entities: ['dist/**/*.entity.js'],
-      synchronize: true
-    }),
+    TypeOrmModule.forRoot(TYPE_ORM_MODULE_OPTIONS),
     UsersModule,
     AuthModule,
     ProfileModule,

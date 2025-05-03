@@ -13,7 +13,7 @@
     "prod": "node dist/main",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "pretty": "yarn format && yarn lint",
+    "pretty": "npm run format && npm run lint",
     "lint-inspector": "npx @eslint/config-inspector",
     "database": "docker compose up --build",
     "lint-staged": "lint-staged"
