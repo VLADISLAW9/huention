@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
-import { cookies } from 'next/headers';
 
 import { theme } from '../../theme';
 

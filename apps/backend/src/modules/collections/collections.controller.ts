@@ -60,10 +60,14 @@ export class CollectionsController extends BaseResolver {
     const token = request.cookies.access_token;
 
     const user = await this.usersService.getUserByToken(token);
+    const parentCollection = await this.collectionsService.getCollectionById(
+      body.parentCollectionId
+    );
 
     const _collection = new Collection();
 
     _collection.creatorId = user.id;
+    _collection.parentCollection = parentCollection;
     _collection.name = body.name;
     _collection.description = body.description;
 

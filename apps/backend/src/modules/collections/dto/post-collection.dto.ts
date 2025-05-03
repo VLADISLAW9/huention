@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class PostCollectionDto {
   @IsString()
@@ -18,4 +18,11 @@ export class PostCollectionDto {
     required: false
   })
   description: string;
+
+  @ApiProperty({
+    description: 'ID родительской коллекции',
+    example: 1,
+    required: false
+  })
+  parentCollectionId: number;
 }

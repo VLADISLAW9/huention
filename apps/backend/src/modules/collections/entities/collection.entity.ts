@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Document } from '@/modules/documents/entities';
 
@@ -25,6 +25,16 @@ export class Collection {
     example: 'Описание'
   })
   description: string;
+
+  @ManyToOne(() => Collection, (collection) => collection.documents)
+  @JoinColumn({ name: 'parentCollectionId', referencedColumnName: 'id' })
+  parentCollection: Collection;
+
+  @OneToMany(() => Collection, (collection: Collection) => collection.parentCollection)
+  @ApiProperty({
+    description: 'Дочерние коллекции'
+  })
+  childCollections: Collection[];
 
   @Column({ default: null })
   @ApiProperty({
