@@ -33,8 +33,9 @@ export const Navbar = () => {
         )}
         {state.showAddCollectionField && (
           <TextInput
+            {...state.collectionNameInput.register()}
             autoFocus
-            onBlur={() => functions.toggleShowAddCollectionField(false)}
+            onBlur={functions.onCollectionNameInputBlur}
             placeholder='Введите имя коллекции...'
           />
         )}
