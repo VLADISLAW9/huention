@@ -1,9 +1,10 @@
 import { Fetches } from '@siberiacancode/fetches';
+import * as process from 'node:process';
 
 import { ROUTES } from '../constants';
 import { STATUS_CODES } from '../constants/api';
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = process.env.API_URL || 'http://localhost:8000/api';
 
 export const huentionApi = new Fetches({
   baseURL: BASE_URL

@@ -1,14 +1,17 @@
 import type { TreeNodeData } from '@mantine/core';
 
+import { useToggle } from '@mantine/hooks';
 import { IconHome } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { getCollections } from '@/utils/api/requests';
 import { ROUTES } from '@/utils/constants';
+import { useBoolean, useMount } from '@/utils/hooks';
 
 export const useNavbar = () => {
   const [collectionItems, setCollectionItems] = useState<TreeNodeData[]>([]);
+  const [showAddCollectionField, toggleShowAddCollectionField] = useBoolean();
 
   const navLinks = [
     {
@@ -21,7 +24,7 @@ export const useNavbar = () => {
     }
   ];
 
-  useEffect(() => {
+  useMount(() => {
     (async () => {
       const getCollectionsResponse = await getCollections();
 
@@ -38,9 +41,10 @@ export const useNavbar = () => {
 
       setCollectionItems(collectionItems);
     })();
-  }, []);
+  });
 
   return {
-    state: { navLinks, collectionItems }
+    functions: { toggleShowAddCollectionField },
+    state: { navLinks, collectionItems, showAddCollectionField }
   };
 };

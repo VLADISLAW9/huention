@@ -1,13 +1,12 @@
-import { ActionIcon, AppShellHeader, Box } from '@mantine/core';
-import { IconAlphabetHebrew } from '@tabler/icons-react';
+import { AppShellHeader } from '@mantine/core';
 import Link from 'next/link';
+
+import { Logotype } from '@/app/(components)';
 
 export const Header = () => (
   <AppShellHeader p='md'>
     <Link href='/home'>
-      <ActionIcon variant='white'>
-        <IconAlphabetHebrew />
-      </ActionIcon>
+      <Logotype />
     </Link>
   </AppShellHeader>
 );

@@ -1,12 +1,13 @@
 'use client';
 
-import { AppShellNavbar, NavLink, Stack, Text, Tree } from '@mantine/core';
+import { AppShellNavbar, Button, NavLink, Stack, Text, TextInput, Tree } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 
 import { RenderTreeNode } from './components';
 import { useNavbar } from './hooks';
 
 export const Navbar = () => {
-  const { state } = useNavbar();
+  const { state, functions } = useNavbar();
 
   return (
     <AppShellNavbar>
@@ -17,6 +18,26 @@ export const Navbar = () => {
         <Text c='dimmed' size='sm'>
           Коллекции
         </Text>
+        {!state.showAddCollectionField && (
+          <Button
+            c='dimmed'
+            justify='start'
+            p={0}
+            size='compact-xs'
+            variant='transparent'
+            leftSection={<IconPlus size={20} />}
+            onClick={() => functions.toggleShowAddCollectionField()}
+          >
+            Новая коллекция
+          </Button>
+        )}
+        {state.showAddCollectionField && (
+          <TextInput
+            autoFocus
+            onBlur={() => functions.toggleShowAddCollectionField(false)}
+            placeholder='Введите имя коллекции...'
+          />
+        )}
         <Tree data={state.collectionItems} expandOnClick={false} renderNode={RenderTreeNode} />
       </Stack>
     </AppShellNavbar>
