@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres
+    container_name: huention-database
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: huention
+    networks:
+      - default
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: huention-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    depends_on:
+      - postgres
+    ports:
+      - '5050:80'
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge

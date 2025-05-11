@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module.js';
+import { CONFIG } from './shared/constants/config.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,6 +31,8 @@ async function bootstrap() {
   app.use('/live', (_req, res) => {
     res.json({ status: true });
   });
+
+  console.log(CONFIG);
 
   const apiConfig = new DocumentBuilder().setTitle('Huention').setVersion('1.0').build();
 

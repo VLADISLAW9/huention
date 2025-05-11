@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import {
@@ -9,20 +10,26 @@ import {
   UsersModule
 } from './modules';
 
-const TYPE_ORM_MODULE_OPTIONS: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'admin',
-  password: '1234',
-  database: 'huention',
-  entities: ['dist/**/*.entity.js'],
-  synchronize: true
-};
-
 @Module({
   imports: [
-    TypeOrmModule.forRoot(TYPE_ORM_MODULE_OPTIONS),
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV || 'dev'}`,
+      isGlobal: true
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: ['dist/**/*.entity.js'],
+        synchronize: configService.get<string>('MODE') === 'dev'
+      })
+    }),
     UsersModule,
     AuthModule,
     ProfileModule,
