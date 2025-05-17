@@ -9,7 +9,13 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: huention
     networks:
+<<<<<<< HEAD:apps/backend/docker-compose.yml
       - app-network
+=======
+      - default
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+>>>>>>> 5683ac5 (✅ add auto connect db in pg admin):apps/backend/docker-compose.dev.yml
 
   pgadmin:
     image: dpage/pgadmin4
@@ -21,6 +27,22 @@ services:
       - app-network
     ports:
       - '5050:80'
+<<<<<<< HEAD:apps/backend/docker-compose.yml
 
 networks:
   app-network:
+=======
+    networks:
+      - default
+    volumes:
+      - ./pgadmin-config/servers.json:/pgadmin4/servers.json
+      - ./pgadmin-config/pgpass:/pgpass
+    command: ['bash', '-c', 'chmod 600 /pgpass && /entrypoint.sh']
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  postgres_data:
+>>>>>>> 5683ac5 (✅ add auto connect db in pg admin):apps/backend/docker-compose.dev.yml
