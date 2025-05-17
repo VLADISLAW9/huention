@@ -1,13 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, ValidateIf } from 'class-validator';
 
-export class PostDocumentDto {
+export class GetDocumentDto {
   @IsNumber()
-  @ValidateIf((_, value) => value !== null)
   @ApiProperty({
-    description: 'Id документа-родителя',
+    description: 'Id документа',
     example: 1,
     required: true
   })
-  parentDocumentId: number | null;
+  id: number;
 }

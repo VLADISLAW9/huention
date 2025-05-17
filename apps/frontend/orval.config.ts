@@ -1,8 +1,8 @@
 export default {
   pokemon: {
-    input: '../backend/src/static/api/huention.yml',
+    input: 'http://localhost:3000/api-json',
     output: {
-      schemas: '../frontend/generated/api'
+      schemas: 'generated/api'
     }
   }
 };

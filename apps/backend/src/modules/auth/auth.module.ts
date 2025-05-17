@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+
+import { ApiAuthGuard } from '@/shared';
 
 import { UsersModule, UsersService } from '../users';
 import { AuthController } from './auth.controller';
@@ -16,7 +19,7 @@ import { JwtStrategy } from './common/strategies/jwt.strategy';
       signOptions: { expiresIn: '1d' }
     })
   ],
-  exports: [AuthModule],
+  exports: [AuthModule, AuthService],
   providers: [UsersService, AuthService, JwtStrategy],
   controllers: [AuthController]
 })

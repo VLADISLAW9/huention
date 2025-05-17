@@ -14,7 +14,6 @@ export class ProfileController extends BaseResolver {
     super();
   }
 
-  @ApiAuthorizedOnly()
   @Get('')
   @ApiOperation({ summary: 'получить сессию пользователя' })
   @ApiResponse({

@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 
+import { ApiAuthGuard } from '@/shared';
+
 import { AuthModule, AuthService } from '../auth';
 import { UsersModule, UsersService } from '../users';
 import { ProfileController } from './profile.controller';

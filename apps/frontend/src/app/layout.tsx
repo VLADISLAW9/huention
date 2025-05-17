@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
-import { cookies } from 'next/headers';
 
 import { theme } from '../../theme';
 
 import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
 
 export const metadata = {
   title: 'Huention',
